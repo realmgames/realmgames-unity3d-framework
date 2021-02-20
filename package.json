@@ -1,0 +1,17 @@
+{
+  "name": "com.realmgames.unityframework",
+  "version": "1.0.0",
+  "displayName": "Realm Games Unity3D Framework",
+  "description": "C# unity3D Framework",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "keywords": [
+    "Realm games"
+  ],
+  "author": {
+    "name": "William Herrera",
+    "email": "william@realmgames.com",
+    "url": "https://www.realmgames.com"
+  },
+  "type": "library"
+}

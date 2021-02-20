@@ -1,0 +1,16 @@
+{
+    "name": "com.realmgames.tilesystem",
+    "references": [
+        "GUID:16be2f3dbbbcb45b79082f1f7d26b7e4",
+        "GUID:c3331011a39fa48239034ee531d74bbc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
