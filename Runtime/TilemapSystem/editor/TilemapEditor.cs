@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace RealmGames.TileSystem
 {
-    [CustomEditor(typeof(GameBoardDefinition)), CanEditMultipleObjects]
-    public class GameBoardEditor : Editor
+    [CustomEditor(typeof(TilemapDefinition)), CanEditMultipleObjects]
+    public class TilemapEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            GameBoardDefinition targetObj = (GameBoardDefinition)target;
+            TilemapDefinition targetObj = (TilemapDefinition)target;
 
             if (targets.Length == 1)
             {
@@ -51,20 +51,13 @@ namespace RealmGames.TileSystem
             }
 
             if(GUILayout.Button("Compute Block Count")) {
-                foreach(GameBoardDefinition t in targets) {
+                foreach(TilemapDefinition t in targets) {
                     t.blockCount = t.CountBlocks();
                 }
             }
 
             // Show default inspector property editor
             DrawDefaultInspector();
-
-
-
-            if (GUILayout.Button("Solver"))
-            {
-                GameBoardDefinition.Solver(targetObj);
-            }
 
         }
     }

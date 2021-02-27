@@ -11,6 +11,7 @@ namespace RealmGames.TileSystem
 
     public class Tilemap : MonoBehaviour
     {
+        public Tileset tileset;
         public GameObject boardTemplate;
         public Vector2 tileSize = Vector2.one;
         //public CameraController cameraController;
@@ -21,7 +22,7 @@ namespace RealmGames.TileSystem
         private Vector2Int m_invalidPosition = new Vector2Int(-1, -1);
         //private int m_boardLayerMask;
         private int m_width, m_height;
-        private GameBoardDefinition m_tileMapDefinition;
+        private TilemapDefinition m_tileMapDefinition;
 
         public int Width
         {
@@ -113,7 +114,7 @@ namespace RealmGames.TileSystem
             }
         }
 
-        public void Generate(GameBoardDefinition definition, bool centerGameBoard = true)
+        public void Generate(TilemapDefinition definition, bool centerGameBoard = true)
         {
         //    if (centerGameBoard)
         //        FitToSizeCenter(definition.width, definition.height, margin, new Vector3(0.5f, 0.5f, 0f), new Vector3(0, 1f, 0));
@@ -272,6 +273,20 @@ namespace RealmGames.TileSystem
         public string GetSlotSpriteStateName(Vector2Int pos)
         {
             return m_tiles[pos.x + (pos.y * m_width)].GetStateName();
+        }
+
+        public void SetSlotSprite(int x, int y, Sprite sprite)
+        {
+            m_tiles[x + (y * m_width)].spriteRenderer.sprite = sprite;
+        }
+
+        public void SetSlotSprite(Vector2Int pos, string name, Color color)
+        {
+            int index = pos.x + (pos.y * m_width);
+
+            m_tiles[index].spriteRenderer.sprite = tileset.GetSprite(name);
+
+            m_tiles[index].spriteRenderer.color = color;
         }
     }
 }
