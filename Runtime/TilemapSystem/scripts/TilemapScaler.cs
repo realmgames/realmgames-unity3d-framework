@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RealmGames.TileSystem
 {
-    public class CenterTilemap : MonoBehaviour
+    public class TilemapScaler : MonoBehaviour
     {
         public Vector2Int margin;
         public Vector3 offset;

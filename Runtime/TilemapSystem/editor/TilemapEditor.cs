@@ -44,7 +44,12 @@ namespace RealmGames.TileSystem
                     {
                         int index = x + (y * targetObj.width);
 
-                        targetObj.map[index] = EditorGUILayout.Toggle(targetObj.map[index] == 1) ? (byte)1 : (byte)0;
+                        bool val = targetObj.map[index] > 0;
+
+                        bool new_val = EditorGUILayout.Toggle(val);
+
+                        if (val != new_val)
+                            targetObj.map[index] = new_val ? (byte)1 : (byte)0;
                     }
                     EditorGUILayout.EndHorizontal();
                 }

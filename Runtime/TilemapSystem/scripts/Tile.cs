@@ -19,80 +19,58 @@ namespace RealmGames.TileSystem
     public class Tile : MonoBehaviour
     {
         public Vector2Int position;
-        public SpriteRenderer spriteRenderer;
-        public SpriteState[] states;
+        public bool free;
+        public SpriteRenderer foreground;
+        public SpriteRenderer background;
 
-        private SpriteState m_current;
+        private GameObject m_block;
 
-        public SpriteState GetState()
+        public GameObject Block
         {
-            return m_current;
-        }
-
-        public string GetStateName()
-        {
-            if (m_current == null)
-                return string.Empty;
-
-            return m_current.name;
-        }
-
-        public void Set(SpriteState state, Color color)
-        {
-            if (m_current != null)
-                m_current.OnStateDisabled.Invoke();
-
-            m_current = state;
-            spriteRenderer.color = color;
-            spriteRenderer.sprite = state.sprite;
-
-            m_current.OnStateEnabled.Invoke();
-        }
-
-        public void Set(SpriteState state)
-        {
-            Set(state, state.color);
-        }
-
-        public void SetState(int index)
-        {
-            Set(states[index]);
-        }
-
-        public void SetState(string name)
-        {
-            if (m_current != null && string.Equals(m_current.name, name))
+            get
             {
-                Set(m_current);
-                return;
-            }
-
-            foreach (SpriteState state in states)
-            {
-                if (string.Equals(name, state.name))
-                {
-                    Set(state);
-                    return;
-                }
+                return m_block;
             }
         }
 
-        public void SetState(string name, Color color)
+        public void Cleanup()
         {
-            if (m_current != null && string.Equals(m_current.name, name))
+            free = true;
+            if (m_block != null)
             {
-                Set(m_current, color);
-                return;
+                Destroy(m_block);
+                m_block = null;
             }
+        }
 
-            foreach (SpriteState state in states)
+        public void Free()
+        {
+            free = true;
+            m_block = null;
+        }
+
+        public void DestroyBlock()
+        {
+            free = true;
+            if (m_block != null)
             {
-                if (string.Equals(name, state.name))
-                {
-                    Set(state, color);
-                    return;
-                }
+                Rigidbody2D rigidbody2D = m_block.AddComponent<Rigidbody2D>();
+
+                rigidbody2D.AddForce(new Vector2(UnityEngine.Random.Range(-2f, 2f), 3f), ForceMode2D.Impulse);
+                rigidbody2D.AddTorque(2f * (UnityEngine.Random.value - 0.5f), ForceMode2D.Impulse);
+
+                //m_block.AddComponent<TimedDestructor>().delay = 2f;
+
+                m_block = null;
             }
+        }
+
+        public void SetBlock(GameObject block)
+        {
+            m_block = block;
+            m_block.transform.SetParent(transform);
+            m_block.transform.localPosition = Vector3.zero;
+            free = false;
         }
     }
 }

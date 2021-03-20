@@ -66,6 +66,14 @@ namespace RealmGames.TileSystem
             }
         }
 
+        public Vector2 CursorPositionNoOffset
+        {
+            get
+            {
+                return MouseUtility.MousePositionOnPlaneVec2(transform, Camera.main);
+            }
+        }
+
         // Use this for initialization
         //void Awake()
         //{
@@ -110,15 +118,12 @@ namespace RealmGames.TileSystem
                 if (slot == null)
                     continue;
 
-                slot.SetState(0);
+                //slot.SetState(0);
             }
         }
 
-        public void Generate(TilemapDefinition definition, bool centerGameBoard = true)
+        public void Generate(TilemapDefinition definition)
         {
-        //    if (centerGameBoard)
-        //        FitToSizeCenter(definition.width, definition.height, margin, new Vector3(0.5f, 0.5f, 0f), new Vector3(0, 1f, 0));
-
             Cleanup();
 
             m_tileMapDefinition = definition;
@@ -147,7 +152,7 @@ namespace RealmGames.TileSystem
 
                     Tile slot = block.GetComponent<Tile>();
 
-                    slot.SetState(0);
+                    //slot.SetState(0);
                     slot.position = new Vector2Int(x,y);
 
                     m_tiles[x + (m_width * y)] = slot;
@@ -171,9 +176,42 @@ namespace RealmGames.TileSystem
             return m_tiles[index];
         }
 
-        public Tile GetTile(Vector2Int tileMapPosition)
+        public Tile GetTile(int x, int y)
         {
-            return GetTile(GetTileIndex(tileMapPosition));
+            return m_tiles[x + (y * m_width)];
+        }
+
+        public Tile GetTile(Vector2Int pos)
+        {
+            if (!IsInBounds(pos))
+                return null;
+
+            return m_tiles[pos.x + (pos.y * m_width)];
+        }
+
+        public bool IsFree(int x, int y)
+        {
+            Tile slot = m_tiles[x + (y * m_width)];
+
+            return slot != null && slot.free;
+        }
+
+        public bool IsFree(Vector2Int pos)
+        {
+            Tile slot = m_tiles[pos.x + (pos.y * m_width)];
+
+            return slot != null && slot.free;
+        }
+
+        public bool IsInBounds(Vector2Int pos)
+        {
+            if (pos.x < 0 || pos.x >= m_width)
+                return false;
+
+            if (pos.y < 0 || pos.y >= m_height)
+                return false;
+
+            return true;
         }
 
         public Vector2Int WorldToTilePosition(Vector2 position)
@@ -231,62 +269,47 @@ namespace RealmGames.TileSystem
                 pos = p;
                 return true;
             }
+        }
 
-            /*
-            Collider2D hit2D = Physics2D.OverlapPoint(CursorPosition, m_boardLayerMask);
+        public bool GetBoardPosition(Vector2 cursorPos, out Vector2Int pos)
+        {
+            Vector2Int p = WorldToTilePosition(cursorPos);
 
-            if (hit2D != null)
+            Tile tile = GetTile(p);
+
+            if (tile == null)
             {
-                Tile slot = hit2D.transform.GetComponent<Tile>();
-
-                pos = slot.position;
-
+                pos = m_invalidPosition;
+                return false;
+            }
+            else
+            {
+                pos = p;
                 return true;
             }
-
-            pos = m_invalidPosition;
-
-            return false;
-            */
-        }
-
-        public void SetSlotSpriteState(int x, int y, int index)
-        {
-            m_tiles[x + (y * m_width)].SetState(index);
-        }
-
-        public void SetSlotSpriteState(Vector2Int pos, int index)
-        {
-            m_tiles[pos.x + (pos.y * m_width)].SetState(index);
-        }
-
-        public void SetSlotSpriteState(Vector2Int pos, string name)
-        {
-            m_tiles[pos.x + (pos.y * m_width)].SetState(name);
-        }
-
-        public void SetSlotSpriteState(Vector2Int pos, string name, Color color)
-        {
-            m_tiles[pos.x + (pos.y * m_width)].SetState(name, color);
-        }
-
-        public string GetSlotSpriteStateName(Vector2Int pos)
-        {
-            return m_tiles[pos.x + (pos.y * m_width)].GetStateName();
         }
 
         public void SetSlotSprite(int x, int y, Sprite sprite)
         {
-            m_tiles[x + (y * m_width)].spriteRenderer.sprite = sprite;
+            m_tiles[x + (y * m_width)].foreground.color = Color.white;
+
+            m_tiles[x + (y * m_width)].foreground.sprite = sprite;
         }
 
         public void SetSlotSprite(Vector2Int pos, string name, Color color)
         {
             int index = pos.x + (pos.y * m_width);
 
-            m_tiles[index].spriteRenderer.sprite = tileset.GetSprite(name);
+            m_tiles[index].foreground.sprite = tileset.GetSprite(name);
 
-            m_tiles[index].spriteRenderer.color = color;
+            m_tiles[index].foreground.color = color;
+        }
+
+        public void PlaceBlock(GameObject gameBlock, Vector2Int pos)
+        {
+            Tile slot = GetTile(pos);
+
+            slot.SetBlock(gameBlock);
         }
     }
 }
