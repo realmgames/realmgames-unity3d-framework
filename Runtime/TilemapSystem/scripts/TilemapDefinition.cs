@@ -1,16 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace RealmGames.TileSystem
 {
     [CreateAssetMenu(fileName = "tilemap", menuName = "Tilemap Definition")]
-    public class TilemapDefinition : ScriptableObject
+    public class TilemapDefinition : ScriptableObject, ITilemapData
     {
         public int width;
         public int height;
         public int blockCount;
         public byte[] map;
+
+        public byte[] Data
+        {
+            get
+            {
+                return map;
+            }
+        }
 
         public Vector2Int Size
         {
@@ -18,6 +27,35 @@ namespace RealmGames.TileSystem
             {
                 return new Vector2Int(width, height);
             }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return height;
+            }
+        }
+
+        public void ExportJson ()
+        {
+            TilemapData data = new TilemapData();
+
+            data.width = width;
+            data.height = height;
+            data.map = map;
+
+            string json_string = JsonUtility.ToJson(data, true);
+
+            File.WriteAllText(Application.dataPath + "/Resources/level.json", json_string);
         }
 
         public int CountBlocks()

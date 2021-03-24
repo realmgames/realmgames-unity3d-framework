@@ -22,13 +22,13 @@ namespace RealmGames.TileSystem
         private Vector2Int m_invalidPosition = new Vector2Int(-1, -1);
         //private int m_boardLayerMask;
         private int m_width, m_height;
-        private TilemapDefinition m_tileMapDefinition;
+        private ITilemapData m_tileMapData;
 
         public int Width
         {
             get
             {
-                return (m_tileMapDefinition != null) ? m_tileMapDefinition.width : 0;
+                return (m_tileMapData != null) ? m_tileMapData.Width : 0;
             }
         }
 
@@ -36,7 +36,7 @@ namespace RealmGames.TileSystem
         {
             get
             {
-                return (m_tileMapDefinition != null) ? m_tileMapDefinition.height : 0;
+                return (m_tileMapData != null) ? m_tileMapData.Height : 0;
             }
         }
 
@@ -95,7 +95,7 @@ namespace RealmGames.TileSystem
 
         public void Cleanup()
         {
-            m_tileMapDefinition = null;
+            m_tileMapData = null;
 
             m_width = 0;
             m_height = 0;
@@ -122,14 +122,14 @@ namespace RealmGames.TileSystem
             }
         }
 
-        public void Generate(TilemapDefinition definition)
+        public void Generate(ITilemapData definition)
         {
             Cleanup();
 
-            m_tileMapDefinition = definition;
+            m_tileMapData = definition;
 
-            m_width = m_tileMapDefinition.width;
-            m_height = m_tileMapDefinition.height;
+            m_width = m_tileMapData.Width;
+            m_height = m_tileMapData.Height;
 
             m_tiles = new Tile[m_width * m_height];
 

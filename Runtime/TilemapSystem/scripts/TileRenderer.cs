@@ -9,7 +9,7 @@ namespace RealmGames.TileSystem
         public Tileset tileset;
 
         public Tilemap gameBoard;
-        public TilemapDefinition m_gameBoardDefinition;
+        public ITilemapData m_gameBoardDefinition;
 
         public void UpdateTexture(int x, int y)
         {
@@ -96,9 +96,9 @@ namespace RealmGames.TileSystem
 
         public void UpdateTextures()
         {
-            for (int x = 0; x < m_gameBoardDefinition.width; x++)
+            for (int x = 0; x < m_gameBoardDefinition.Width; x++)
             {
-                for (int y = 0; y < m_gameBoardDefinition.height; y++)
+                for (int y = 0; y < m_gameBoardDefinition.Height; y++)
                 {
                     UpdateTexture(x, y);
                 }

@@ -61,6 +61,11 @@ namespace RealmGames.TileSystem
                 }
             }
 
+            if (GUILayout.Button("Export json"))
+            {
+                targetObj.ExportJson();
+            }
+
             // Show default inspector property editor
             DrawDefaultInspector();
 

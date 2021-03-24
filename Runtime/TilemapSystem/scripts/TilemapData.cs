@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RealmGames.TileSystem
 {
     [Serializable]
-    public class TilemapData
+    public class TilemapData : ITilemapData
     {
         public int width;
         public int height;
@@ -17,6 +17,30 @@ namespace RealmGames.TileSystem
             get
             {
                 return new Vector2Int(width, height);
+            }
+        }
+
+        public byte[] Data
+        {
+            get
+            {
+                return map;
+            }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return height;
             }
         }
 
