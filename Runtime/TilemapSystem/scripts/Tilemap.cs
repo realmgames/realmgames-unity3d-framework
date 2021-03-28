@@ -296,6 +296,13 @@ namespace RealmGames.TileSystem
             m_tiles[x + (y * m_width)].foreground.sprite = sprite;
         }
 
+        public void SetBackgroundSprite(int x, int y, Sprite sprite)
+        {
+            m_tiles[x + (y * m_width)].background.color = Color.white;
+
+            m_tiles[x + (y * m_width)].background.sprite = sprite;
+        }
+
         public void SetSlotSprite(Vector2Int pos, string name, Color color)
         {
             int index = pos.x + (pos.y * m_width);
