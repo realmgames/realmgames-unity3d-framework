@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace RealmGames.TileSystem
 {
@@ -18,6 +19,7 @@ namespace RealmGames.TileSystem
         public Vector2Int margin = Vector2Int.zero;
         public Tile[] m_tiles;
         public GameBoardGeneratedEvent gameBoardGenerated;
+        public UnityEvent<Tile> OnTilePointerClick;
 
         private Vector2Int m_invalidPosition = new Vector2Int(-1, -1);
         //private int m_boardLayerMask;
@@ -92,6 +94,20 @@ namespace RealmGames.TileSystem
 
             transform.localPosition = new Vector3(x, y, 0f) + offset;
         }*/
+
+        void Awake()
+        {
+            if( Camera.main.GetComponent<Physics2DRaycaster>() == null)
+            {
+                Debug.LogWarning("No 'Physics2DRaycaster' Component on Main Camera! Tiles will not receive events!");
+            }
+        }
+
+        public void TileClicked (Tile tile)
+        {
+            if (OnTilePointerClick != null)
+                OnTilePointerClick.Invoke(tile);
+        }
 
         public void Cleanup()
         {

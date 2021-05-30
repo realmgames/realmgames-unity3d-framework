@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace RealmGames.TileSystem
 {
@@ -16,7 +17,7 @@ namespace RealmGames.TileSystem
         public UnityEvent OnStateDisabled;
     }
 
-    public class Tile : MonoBehaviour
+    public class Tile : MonoBehaviour, IPointerClickHandler
     {
         public Vector2Int position;
         public bool free;
@@ -24,12 +25,24 @@ namespace RealmGames.TileSystem
         public SpriteRenderer background;
 
         private GameObject m_block;
+        private Tilemap m_tilemap;
 
         public GameObject Block
         {
             get
             {
                 return m_block;
+            }
+        }
+
+        public Tilemap Tilemap
+        {
+            get
+            {
+                if (m_tilemap == null)
+                    m_tilemap = transform.parent.GetComponent<Tilemap>();
+
+                return m_tilemap;
             }
         }
 
@@ -71,6 +84,11 @@ namespace RealmGames.TileSystem
             m_block.transform.SetParent(transform);
             m_block.transform.localPosition = Vector3.zero;
             free = false;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Tilemap?.TileClicked(this);
         }
     }
 }
